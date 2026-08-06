@@ -310,6 +310,97 @@
   .cta-card .btn-ghost { background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.3); }
   .cta-card .btn-ghost:hover { border-color: #fff; }
 
+  /* ---------- Achievements (zipper) ---------- */
+  .achieve {
+    position: relative; background: var(--navy); color: #fff;
+    padding: 110px 0 120px;
+  }
+  .achieve .eyebrow { color: #fff; }
+  .achieve .eyebrow::before { background: #fff; }
+  .achieve h2 { color: #fff; }
+  .achieve .ghost { color: rgba(255,255,255,.05); }
+  .zip { position: relative; margin-top: 46px; }
+  /* center seam (zipper teeth) */
+  .zip-line {
+    position: absolute; left: 50%; top: -14px; bottom: -14px;
+    border-left: 2px dashed rgba(255,255,255,.28);
+  }
+  /* zipper pull */
+  .zip-pull {
+    position: absolute; left: 50%; top: -10px;
+    width: 13px; height: 13px; background: #fff;
+    transform: translateX(-50%) rotate(45deg);
+    border-radius: 2px;
+    box-shadow: 0 0 14px rgba(255,255,255,.35);
+    opacity: 0;
+  }
+  .zip.on .zip-pull { animation: zipDown 1.9s var(--ease) .2s forwards; }
+  .zip:not(.on) .zip-pull { animation: zipUp 1.9s var(--ease) .2s forwards; }
+  @keyframes zipDown {
+    0%   { opacity: 0; top: -10px; }
+    8%   { opacity: 1; }
+    100% { opacity: 1; top: calc(100% - 4px); }
+  }
+  @keyframes zipUp {
+    0%   { opacity: 1; top: calc(100% - 4px); }
+    92%  { opacity: 1; }
+    100% { opacity: 0; top: -10px; }
+  }
+  /* zip: rows close top -> bottom */
+  .zip-row:nth-child(3)  .z-item { transition-delay: 0ms; }
+  .zip-row:nth-child(4)  .z-item { transition-delay: 150ms; }
+  .zip-row:nth-child(5)  .z-item { transition-delay: 300ms; }
+  .zip-row:nth-child(6)  .z-item { transition-delay: 450ms; }
+  .zip-row:nth-child(7)  .z-item { transition-delay: 600ms; }
+  /* unzip: rows reopen bottom -> top */
+  .zip:not(.on) .zip-row:nth-child(3) .z-item { transition-delay: 600ms; }
+  .zip:not(.on) .zip-row:nth-child(4) .z-item { transition-delay: 450ms; }
+  .zip:not(.on) .zip-row:nth-child(5) .z-item { transition-delay: 300ms; }
+  .zip:not(.on) .zip-row:nth-child(6) .z-item { transition-delay: 150ms; }
+  .zip:not(.on) .zip-row:nth-child(7) .z-item { transition-delay: 0ms; }
+  /* teeth pop in sync with their row */
+  .zip-row:nth-child(3)::after  { transition-delay: 120ms; }
+  .zip-row:nth-child(4)::after  { transition-delay: 270ms; }
+  .zip-row:nth-child(5)::after  { transition-delay: 420ms; }
+  .zip-row:nth-child(6)::after  { transition-delay: 570ms; }
+  .zip-row:nth-child(7)::after  { transition-delay: 720ms; }
+  .zip:not(.on) .zip-row:nth-child(3)::after { transition-delay: 720ms; }
+  .zip:not(.on) .zip-row:nth-child(4)::after { transition-delay: 570ms; }
+  .zip:not(.on) .zip-row:nth-child(5)::after { transition-delay: 420ms; }
+  .zip:not(.on) .zip-row:nth-child(6)::after { transition-delay: 270ms; }
+  .zip:not(.on) .zip-row:nth-child(7)::after { transition-delay: 120ms; }
+  .zip-row {
+    position: relative;
+    display: flex; align-items: center; justify-content: space-between; gap: 28px;
+    padding: 24px 8px;
+    border-bottom: 1px solid rgba(255,255,255,.13);
+  }
+  .zip-row:last-child { border-bottom: none; }
+  .z-item {
+    font-size: clamp(15px, 1.9vw, 18px); font-weight: 600; letter-spacing: .01em;
+    opacity: 0;
+    transition: opacity .85s var(--ease), transform .85s var(--ease);
+  }
+  .z-item b { font-weight: 800; font-size: 1.15em; color: #fff; }
+  .z-left  { transform: translateX(-72px); }
+  .z-right { transform: translateX(72px); }
+  .zip.on .z-left  { opacity: 1; transform: none; }
+  .zip.on .z-right { opacity: 1; transform: none; }
+  /* tooth: small diamond at the seam per row, pops as the row closes */
+  .zip-row::after {
+    content: ''; position: absolute; left: 50%; top: 50%;
+    width: 7px; height: 7px; background: #fff;
+    transform: translate(-50%, -50%) rotate(45deg) scale(0);
+    opacity: 0;
+    transition: transform .5s var(--ease), opacity .5s var(--ease);
+  }
+  .zip.on .zip-row::after { transform: translate(-50%, -50%) rotate(45deg) scale(1); opacity: 1; }
+  @media (max-width: 760px) {
+    .zip-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .z-left, .z-right { transform: none; }
+    .zip-line, .zip-pull { display: none; }
+  }
+
   /* ---------- Footer ---------- */
   footer { background: var(--ink); color: #fff; padding: 70px 0 30px; }
   .foot-grid {
@@ -492,6 +583,39 @@
   </div>
 </section>
 
+<!-- PAGE 6 · ACHIEVEMENTS (zipper) -->
+<section class="achieve" id="achievements">
+  <span class="ghost">06</span>
+  <div class="wrap">
+    <div class="eyebrow reveal">Achievements</div>
+    <h2 class="reveal">A record of delivery</h2>
+    <div class="zip">
+      <div class="zip-line"></div>
+      <div class="zip-pull"></div>
+      <div class="zip-row">
+        <div class="z-item z-left"><b>20+</b> years of experience</div>
+        <div class="z-item z-right"><b>400+</b> projects delivered</div>
+      </div>
+      <div class="zip-row">
+        <div class="z-item z-left"><b>6</b> engineering disciplines</div>
+        <div class="z-item z-right"><b>5</b> African countries served</div>
+      </div>
+      <div class="zip-row">
+        <div class="z-item z-left">SGR rail works</div>
+        <div class="z-item z-right">Solar module measurement audits</div>
+      </div>
+      <div class="zip-row">
+        <div class="z-item z-left">Mombasa Southern Bypass</div>
+        <div class="z-item z-right">Water &amp; sanitation schemes</div>
+      </div>
+      <div class="zip-row">
+        <div class="z-item z-left">ISO 2015 certified</div>
+        <div class="z-item z-right">NCA &middot; NEMA &middot; NITA &middot; UNGM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div class="foot-grid">
@@ -546,6 +670,15 @@
     });
   }, { threshold: 0.4 });
   document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
+
+  // Zipper: closes on scroll-in, reverses (unzips) on scroll-out
+  const zip = document.querySelector('.zip');
+  if (zip) {
+    const zio = new IntersectionObserver((entries) => {
+      entries.forEach(en => { zip.classList.toggle('on', en.isIntersecting); });
+    }, { threshold: 0.25 });
+    zio.observe(zip);
+  }
 
   document.getElementById('year').textContent = new Date().getFullYear();
 </script>
