@@ -648,13 +648,23 @@
   }, { threshold: 0.4 });
   document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
 
-  // Zipper: closes on scroll-in, reverses (unzips) on scroll-out
+  // Zipper: scroll down = zips (halves converge), scroll up = unzips (halves separate)
   const zip = document.querySelector('.zip');
   if (zip) {
-    const zio = new IntersectionObserver((entries) => {
-      entries.forEach(en => { zip.classList.toggle('on', en.isIntersecting); });
-    }, { threshold: 0.25 });
-    zio.observe(zip);
+    const zipInView = () => {
+      const r = zip.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const visible = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+      return visible > vh * 0.12;
+    };
+    let lastY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      const goingUp = y < lastY;
+      lastY = y;
+      if (!zipInView()) return;
+      zip.classList.toggle('on', !goingUp);
+    }, { passive: true });
   }
 
   document.getElementById('year').textContent = new Date().getFullYear();
