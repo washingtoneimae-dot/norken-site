@@ -279,7 +279,6 @@
     opacity: 0;
     transform: scale(1.02);
     transition: opacity .9s var(--ease), transform 1.4s var(--ease);
-    will-change: opacity, transform;
   }
   .fcard:hover .t-hover { opacity: 1; transform: scale(1.06); }
   .fcard .thumb img.t-main { transition: opacity .9s var(--ease), transform 1.109s var(--ease); }
@@ -328,14 +327,12 @@
   /* zipper pull */
   .zip-pull {
     position: absolute; left: 50%; top: -10px;
-    width: 13px; height: 13px; background: #fff;
+    width: 12px; height: 12px; background: #fff;
     transform: translateX(-50%) rotate(45deg);
-    border-radius: 2px;
-    box-shadow: 0 0 14px rgba(255,255,255,.35);
     opacity: 0;
   }
-  .zip.on .zip-pull { animation: zipDown 2.7s var(--ease) .2s forwards; }
-  .zip:not(.on) .zip-pull { animation: zipUp 2.7s var(--ease) .2s forwards; }
+  .zip.on .zip-pull { animation: zipDown 1.6s var(--ease) .2s forwards; }
+  .zip:not(.on) .zip-pull { animation: zipUp 1.6s var(--ease) .2s forwards; }
   @keyframes zipDown {
     0%   { opacity: 0; top: -10px; }
     6%   { opacity: 1; }
@@ -357,35 +354,33 @@
   }
   .ah {
     width: 50%;
-    opacity: 0;
-    transition: opacity .9s var(--ease), transform .9s var(--ease);
-    will-change: opacity, transform;
+    transition: transform .55s var(--ease);
   }
   .ah b { font-weight: 800; }
-  .ah-l { text-align: right; transform: translateX(-90px); }
-  .ah-r { text-align: left; transform: translateX(90px); }
-  .zip.on .ah { opacity: 1; transform: none; }
+  .ah-l { text-align: right; transform: translateX(-52px); }
+  .ah-r { text-align: left; transform: translateX(52px); }
+  .zip.on .ah { transform: none; }
   /* close top -> bottom */
   .zip .ach-line:nth-child(3)  .ah { transition-delay: 0ms; }
-  .zip .ach-line:nth-child(4)  .ah { transition-delay: 130ms; }
-  .zip .ach-line:nth-child(5)  .ah { transition-delay: 260ms; }
-  .zip .ach-line:nth-child(6)  .ah { transition-delay: 390ms; }
-  .zip .ach-line:nth-child(7)  .ah { transition-delay: 520ms; }
-  .zip .ach-line:nth-child(8)  .ah { transition-delay: 650ms; }
-  .zip .ach-line:nth-child(9)  .ah { transition-delay: 780ms; }
-  .zip .ach-line:nth-child(10) .ah { transition-delay: 910ms; }
-  .zip .ach-line:nth-child(11) .ah { transition-delay: 1040ms; }
-  .zip .ach-line:nth-child(12) .ah { transition-delay: 1170ms; }
+  .zip .ach-line:nth-child(4)  .ah { transition-delay: 90ms; }
+  .zip .ach-line:nth-child(5)  .ah { transition-delay: 180ms; }
+  .zip .ach-line:nth-child(6)  .ah { transition-delay: 270ms; }
+  .zip .ach-line:nth-child(7)  .ah { transition-delay: 360ms; }
+  .zip .ach-line:nth-child(8)  .ah { transition-delay: 450ms; }
+  .zip .ach-line:nth-child(9)  .ah { transition-delay: 540ms; }
+  .zip .ach-line:nth-child(10) .ah { transition-delay: 630ms; }
+  .zip .ach-line:nth-child(11) .ah { transition-delay: 720ms; }
+  .zip .ach-line:nth-child(12) .ah { transition-delay: 810ms; }
   /* open bottom -> top */
-  .zip:not(.on) .ach-line:nth-child(3)  .ah { transition-delay: 1170ms; }
-  .zip:not(.on) .ach-line:nth-child(4)  .ah { transition-delay: 1040ms; }
-  .zip:not(.on) .ach-line:nth-child(5)  .ah { transition-delay: 910ms; }
-  .zip:not(.on) .ach-line:nth-child(6)  .ah { transition-delay: 780ms; }
-  .zip:not(.on) .ach-line:nth-child(7)  .ah { transition-delay: 650ms; }
-  .zip:not(.on) .ach-line:nth-child(8)  .ah { transition-delay: 520ms; }
-  .zip:not(.on) .ach-line:nth-child(9)  .ah { transition-delay: 390ms; }
-  .zip:not(.on) .ach-line:nth-child(10) .ah { transition-delay: 260ms; }
-  .zip:not(.on) .ach-line:nth-child(11) .ah { transition-delay: 130ms; }
+  .zip:not(.on) .ach-line:nth-child(3)  .ah { transition-delay: 810ms; }
+  .zip:not(.on) .ach-line:nth-child(4)  .ah { transition-delay: 720ms; }
+  .zip:not(.on) .ach-line:nth-child(5)  .ah { transition-delay: 630ms; }
+  .zip:not(.on) .ach-line:nth-child(6)  .ah { transition-delay: 540ms; }
+  .zip:not(.on) .ach-line:nth-child(7)  .ah { transition-delay: 450ms; }
+  .zip:not(.on) .ach-line:nth-child(8)  .ah { transition-delay: 360ms; }
+  .zip:not(.on) .ach-line:nth-child(9)  .ah { transition-delay: 270ms; }
+  .zip:not(.on) .ach-line:nth-child(10) .ah { transition-delay: 180ms; }
+  .zip:not(.on) .ach-line:nth-child(11) .ah { transition-delay: 90ms; }
   .zip:not(.on) .ach-line:nth-child(12) .ah { transition-delay: 0ms; }
 
 /* ---------- Footer ---------- */
@@ -648,7 +643,8 @@
   }, { threshold: 0.4 });
   document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
 
-  // Zipper: scroll down = zips (halves converge), scroll up = unzips (halves separate)
+  // Zipper: scroll down = zips, scroll up = unzips.
+  // Zero layout reads unless the scroll direction actually flips.
   const zip = document.querySelector('.zip');
   if (zip) {
     const zipInView = () => {
@@ -658,11 +654,17 @@
       return visible > vh * 0.12;
     };
     let lastY = window.scrollY;
+    let lastGoingUp = null;
+    let lastInView = false;
     window.addEventListener('scroll', () => {
       const y = window.scrollY;
       const goingUp = y < lastY;
       lastY = y;
-      if (!zipInView()) return;
+      const inView = zipInView();
+      if (goingUp === lastGoingUp && inView === lastInView) return;
+      lastGoingUp = goingUp;
+      lastInView = inView;
+      if (!inView) return;
       zip.classList.toggle('on', !goingUp);
     }, { passive: true });
   }
