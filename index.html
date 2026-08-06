@@ -75,7 +75,7 @@
     content: ''; position: absolute; left: 0; bottom: 0;
     height: 2px; width: 100%; background: var(--orange);
     transform: scaleX(0); transform-origin: right;
-    transition: transform .55s var(--ease);
+    transition: transform .45s var(--ease);
   }
   .nav-links a:hover::after, .nav-links a:focus-visible::after,
   .link-line:hover::after, .link-line:focus-visible::after {
@@ -354,7 +354,7 @@
   }
   .ah {
     width: 50%;
-    transition: transform .55s var(--ease);
+    transition: transform .45s var(--ease);
   }
   .ah b { font-weight: 800; }
   .ah-l { text-align: right; transform: translateX(-52px); }
@@ -362,25 +362,25 @@
   .zip.on .ah { transform: none; }
   /* close top -> bottom */
   .zip .ach-line:nth-child(3)  .ah { transition-delay: 0ms; }
-  .zip .ach-line:nth-child(4)  .ah { transition-delay: 90ms; }
-  .zip .ach-line:nth-child(5)  .ah { transition-delay: 180ms; }
-  .zip .ach-line:nth-child(6)  .ah { transition-delay: 270ms; }
-  .zip .ach-line:nth-child(7)  .ah { transition-delay: 360ms; }
-  .zip .ach-line:nth-child(8)  .ah { transition-delay: 450ms; }
-  .zip .ach-line:nth-child(9)  .ah { transition-delay: 540ms; }
-  .zip .ach-line:nth-child(10) .ah { transition-delay: 630ms; }
-  .zip .ach-line:nth-child(11) .ah { transition-delay: 720ms; }
-  .zip .ach-line:nth-child(12) .ah { transition-delay: 810ms; }
+  .zip .ach-line:nth-child(4)  .ah { transition-delay: 70ms; }
+  .zip .ach-line:nth-child(5)  .ah { transition-delay: 140ms; }
+  .zip .ach-line:nth-child(6)  .ah { transition-delay: 210ms; }
+  .zip .ach-line:nth-child(7)  .ah { transition-delay: 280ms; }
+  .zip .ach-line:nth-child(8)  .ah { transition-delay: 350ms; }
+  .zip .ach-line:nth-child(9)  .ah { transition-delay: 420ms; }
+  .zip .ach-line:nth-child(10) .ah { transition-delay: 490ms; }
+  .zip .ach-line:nth-child(11) .ah { transition-delay: 560ms; }
+  .zip .ach-line:nth-child(12) .ah { transition-delay: 630ms; }
   /* open bottom -> top */
-  .zip:not(.on) .ach-line:nth-child(3)  .ah { transition-delay: 810ms; }
-  .zip:not(.on) .ach-line:nth-child(4)  .ah { transition-delay: 720ms; }
-  .zip:not(.on) .ach-line:nth-child(5)  .ah { transition-delay: 630ms; }
-  .zip:not(.on) .ach-line:nth-child(6)  .ah { transition-delay: 540ms; }
-  .zip:not(.on) .ach-line:nth-child(7)  .ah { transition-delay: 450ms; }
-  .zip:not(.on) .ach-line:nth-child(8)  .ah { transition-delay: 360ms; }
-  .zip:not(.on) .ach-line:nth-child(9)  .ah { transition-delay: 270ms; }
-  .zip:not(.on) .ach-line:nth-child(10) .ah { transition-delay: 180ms; }
-  .zip:not(.on) .ach-line:nth-child(11) .ah { transition-delay: 90ms; }
+  .zip:not(.on) .ach-line:nth-child(3)  .ah { transition-delay: 630ms; }
+  .zip:not(.on) .ach-line:nth-child(4)  .ah { transition-delay: 560ms; }
+  .zip:not(.on) .ach-line:nth-child(5)  .ah { transition-delay: 490ms; }
+  .zip:not(.on) .ach-line:nth-child(6)  .ah { transition-delay: 420ms; }
+  .zip:not(.on) .ach-line:nth-child(7)  .ah { transition-delay: 350ms; }
+  .zip:not(.on) .ach-line:nth-child(8)  .ah { transition-delay: 280ms; }
+  .zip:not(.on) .ach-line:nth-child(9)  .ah { transition-delay: 210ms; }
+  .zip:not(.on) .ach-line:nth-child(10) .ah { transition-delay: 140ms; }
+  .zip:not(.on) .ach-line:nth-child(11) .ah { transition-delay: 70ms; }
   .zip:not(.on) .ach-line:nth-child(12) .ah { transition-delay: 0ms; }
 
 /* ---------- Footer ---------- */
@@ -653,19 +653,29 @@
       const visible = Math.min(r.bottom, vh) - Math.max(r.top, 0);
       return visible > vh * 0.12;
     };
+    // Lockout: erratic scroll only updates a pending state; the zipper
+    // applies at most one transition per lock window, ending in the last direction.
     let lastY = window.scrollY;
-    let lastGoingUp = null;
-    let lastInView = false;
+    let pending = null;
+    let locked = false;
+    const apply = () => {
+      locked = true;
+      if (pending !== null) {
+        zip.classList.toggle('on', pending);
+        pending = null;
+      }
+      setTimeout(() => {
+        locked = false;
+        if (pending !== null) apply();
+      }, 350);
+    };
     window.addEventListener('scroll', () => {
       const y = window.scrollY;
       const goingUp = y < lastY;
       lastY = y;
-      const inView = zipInView();
-      if (goingUp === lastGoingUp && inView === lastInView) return;
-      lastGoingUp = goingUp;
-      lastInView = inView;
-      if (!inView) return;
-      zip.classList.toggle('on', !goingUp);
+      if (!zipInView()) { pending = null; return; }
+      pending = !goingUp;          // remember latest desired state
+      if (!locked) apply();
     }, { passive: true });
   }
 
