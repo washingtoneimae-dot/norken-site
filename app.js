@@ -191,7 +191,7 @@ function initHotspots() {
   if (!popover || !popTitle || !popDesc) return;
 
   hotspots.forEach(hotspot => {
-    hotspot.addEventListener('mouseenter', () => {
+    const showPopover = () => {
       const title = hotspot.getAttribute('data-title');
       const desc = hotspot.getAttribute('data-desc');
 
@@ -204,11 +204,23 @@ function initHotspots() {
       popover.style.top = `calc(${top} + 20px)`;
       popover.style.left = `calc(${left} + 10px)`;
       popover.classList.add('active');
+    };
+
+    hotspot.addEventListener('mouseenter', showPopover);
+    hotspot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showPopover();
     });
 
     hotspot.addEventListener('mouseleave', () => {
       popover.classList.remove('active');
     });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.hotspot') && !e.target.closest('.hotspot-popover')) {
+      popover.classList.remove('active');
+    }
   });
 }
 
@@ -253,7 +265,7 @@ function initColorwaySwitcher() {
 }
 
 /**
- * 5. Interactive Provenance Slider ("The First 200")
+ * 5. Interactive Provenance Slider ("The Provenance Standard: 2,000+ Pairs")
  */
 function initProvenanceSlider() {
   const slider = document.getElementById('edition-slider');
@@ -262,11 +274,11 @@ function initProvenanceSlider() {
   if (!slider || !certDisplay) return;
 
   slider.addEventListener('input', (e) => {
-    const val = String(e.target.value).padStart(3, '0');
-    certDisplay.textContent = `PAIR #${val} OF 200`;
+    const val = String(e.target.value).padStart(4, '0');
+    certDisplay.textContent = `PAIR #${val} OF 2,000+`;
 
-    if (val === '001') {
-      certDisplay.textContent = `PAIR #001 OF 200 [FOUNDER SAMPLE]`;
+    if (val === '0001') {
+      certDisplay.textContent = `PAIR #0001 OF 2,000+ [FOUNDER SAMPLE]`;
     }
   });
 
@@ -347,7 +359,7 @@ function initFormSubmissions() {
 
         formFeedback.className = 'form-feedback success';
         formFeedback.innerHTML = `
-          <strong>Inquiry Transmitted:</strong> Thank you, ${name}. Your note regarding <strong>${interest}</strong> has been forwarded directly to Washington Eimae (<a href="mailto:washingtoneimae@gmail.com" style="text-decoration:underline;">washingtoneimae@gmail.com</a>). Expect a response within 24–48 hours.
+          <strong>Inquiry Transmitted:</strong> Thank you, ${name}. Your note regarding <strong>${interest}</strong> has been forwarded directly to Washingtone Imae (<a href="mailto:washingtoneimae@gmail.com" style="text-decoration:underline;">washingtoneimae@gmail.com</a>). Expect a response within 24–48 hours.
         `;
         formFeedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
@@ -369,7 +381,7 @@ function initFormSubmissions() {
 
         designerFeedback.className = 'form-feedback success';
         designerFeedback.innerHTML = `
-          <strong>Pitch Received:</strong> Thank you, ${dName}. Your request as <em>${role}</em> is with founder Washington Eimae (<a href="mailto:washingtoneimae@gmail.com" style="text-decoration:underline;">washingtoneimae@gmail.com</a>). The confidential brief will follow shortly.
+          <strong>Pitch Received:</strong> Thank you, ${dName}. Your request as <em>${role}</em> is with founder Washingtone Imae (<a href="mailto:washingtoneimae@gmail.com" style="text-decoration:underline;">washingtoneimae@gmail.com</a>). The confidential brief will follow shortly.
         `;
       }
     });

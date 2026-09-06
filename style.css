@@ -1109,7 +1109,7 @@ button, input, select, textarea {
 }
 
 /* ==========================================================================
-   The First 200 Provenance Section
+   The Provenance Standard Section (2,000+ Pairs)
    ========================================================================== */
 .ledger-showcase {
   display: grid;
@@ -1720,8 +1720,8 @@ button, input, select, textarea {
 
 .footer-top-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 56px;
   margin-bottom: 60px;
 }
 
@@ -1781,17 +1781,6 @@ button, input, select, textarea {
   color: #8C867B;
 }
 
-.tech-badge {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  color: #FFFFFF;
-  background-color: rgba(255, 255, 255, 0.08);
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
 .footer-bottom-row {
   display: flex;
   justify-content: space-between;
@@ -1846,42 +1835,280 @@ button, input, select, textarea {
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  /* Header & Navigation */
   .nav-links {
     display: none;
   }
 
+  .site-header {
+    padding: 12px 0;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .header-actions .btn {
+    padding: 7px 12px;
+    font-size: 0.75rem;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: 36px 0 60px 0;
+  }
+
+  .hero-headline {
+    font-size: clamp(2.125rem, 8vw, 3.25rem);
+    line-height: 1.1;
+  }
+
+  .hero-deck {
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  /* Interactive Shoe Stage Mobile Adaptation */
+  .zoom-lens {
+    display: none !important;
+  }
+
+  .lens-indicator {
+    display: none;
+  }
+
+  .card-status-bar {
+    padding: 10px 16px;
+  }
+
+  .spec-label {
+    font-size: 0.6875rem;
+  }
+
+  .shoe-interactive-wrapper {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Expand hotspot hit area for touch targets */
+  .hotspot {
+    width: 32px;
+    height: 32px;
+  }
+
+  .hotspot::after {
+    content: '';
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Anchored popover on mobile to prevent overflow */
+  .hotspot-popover {
+    position: absolute;
+    left: 12px !important;
+    right: 12px !important;
+    top: auto !important;
+    bottom: 12px !important;
+    max-width: none !important;
+    width: auto;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Shoe Controls */
+  .shoe-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .variant-picker {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .shoe-metrics {
+    width: 100%;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-hairline);
+    padding-top: 14px;
+    gap: 12px;
+  }
+
+  .metric-item {
+    align-items: flex-start;
+  }
+
+  .m-val {
+    font-size: 0.9375rem;
+  }
+
+  /* Section Layouts */
+  .content-section {
+    padding: 64px 0;
+  }
+
   .section-lead-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .section-heading {
+    font-size: 2rem;
+  }
+
+  .section-deck {
+    font-size: 0.9375rem;
   }
 
   .pipeline-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .step-card {
+    padding: 24px 20px;
   }
 
   .economics-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .econ-card {
+    padding: 24px 20px;
+  }
+
+  .econ-num {
+    font-size: 2.25rem;
+  }
+
+  /* Certificate / Ledger Mobile Layout */
+  .ledger-preview-box {
+    padding: 22px 16px;
+  }
+
+  .certificate-mockup {
+    padding: 20px 16px;
+    margin-bottom: 20px;
+  }
+
+  .cert-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .cert-brand {
+    font-size: 0.625rem;
+  }
+
+  .cert-number {
+    font-size: 0.9375rem;
+  }
+
+  .cert-row {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cert-v {
+    text-align: left;
+    font-size: 0.8125rem;
+  }
+
+  .cert-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .cert-note {
+    text-align: left;
+    max-width: 100%;
+  }
+
+  /* Forms and Touch Inputs (16px base font prevents iOS auto-zoom) */
+  input, select, textarea {
+    font-size: 1rem !important;
   }
 
   .form-row-2 {
     grid-template-columns: 1fr;
   }
 
+  .editorial-form {
+    padding: 28px 20px;
+  }
+
   .reservation-card-wrapper {
-    padding: 32px 24px;
+    padding: 28px 18px;
+  }
+
+  .founder-contact-box {
+    padding: 20px 16px;
+  }
+
+  .founder-email-link {
+    font-size: 0.9375rem;
   }
 
   .modal-dialog {
-    padding: 28px 20px;
+    padding: 28px 18px;
+    max-height: 88vh;
+  }
+
+  /* Footer Mobile Refinement */
+  .site-footer {
+    padding: 56px 0 36px 0;
   }
 
   .footer-top-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 36px;
+    margin-bottom: 44px;
+  }
+
+  .footer-mission {
+    font-size: 0.8125rem;
+    max-width: 100%;
+    margin: 14px 0 16px 0;
+  }
+
+  .footer-col-links ul {
+    gap: 14px;
+  }
+
+  .footer-col-links a,
+  .footer-text-btn,
+  .subtle-link {
+    font-size: 0.875rem;
+    padding: 2px 0;
+    display: inline-block;
+  }
+
+  .footer-bottom-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding-top: 24px;
   }
 
   .announcement-content {
-    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 12px;
     text-align: center;
+    font-size: 0.6875rem;
   }
 }
